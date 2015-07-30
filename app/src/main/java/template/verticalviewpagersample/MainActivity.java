@@ -18,6 +18,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 
 public class MainActivity extends ActionBarActivity {
 
@@ -30,6 +33,8 @@ public class MainActivity extends ActionBarActivity {
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     SectionsPagerAdapter mSectionsPagerAdapter;
+
+    private static final int DEFAULT_OFF_SCREEN_LIMIT = 3;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -50,6 +55,7 @@ public class MainActivity extends ActionBarActivity {
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
+        mViewPager.setOffscreenPageLimit(DEFAULT_OFF_SCREEN_LIMIT);
     }
 
 
@@ -96,21 +102,13 @@ public class MainActivity extends ActionBarActivity {
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return 10;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             Locale l = Locale.getDefault();
-            switch (position) {
-                case 0:
-                    return getString(R.string.title_section1).toUpperCase(l);
-                case 1:
-                    return getString(R.string.title_section2).toUpperCase(l);
-                case 2:
-                    return getString(R.string.title_section3).toUpperCase(l);
-            }
-            return null;
+            return String.valueOf(position);
         }
     }
 
@@ -123,6 +121,9 @@ public class MainActivity extends ActionBarActivity {
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
+
+        @Bind(R.id.section_label)
+        TextView mSectionLabel;
 
         /**
          * Returns a new instance of this fragment for the given section
@@ -143,7 +144,18 @@ public class MainActivity extends ActionBarActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+            ButterKnife.bind(this, rootView);
+
+            mSectionLabel.setText(String.valueOf(getArguments().getInt(ARG_SECTION_NUMBER)));
+
             return rootView;
+        }
+
+        @Override
+        public void onDestroyView() {
+            super.onDestroyView();
+            ButterKnife.unbind(this);
         }
     }
 
