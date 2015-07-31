@@ -54,7 +54,7 @@ public class VerticalViewPager extends ViewPager {
                 mask.setAlpha(0);
 
                 // Counteract the default slide transition
-                view.setTranslationX(view.getWidth() * -position);
+                view.setTranslationX(pageWidth * -position);
 
                 //set Y position to swipe in from top
                 float yPosition = position * view.getHeight();
@@ -67,6 +67,7 @@ public class VerticalViewPager extends ViewPager {
 
                 // Counteract the default slide transition
                 view.setTranslationX(pageWidth * -position);
+                view.setTranslationY(0);
 
                 // Scale the page down (between MIN_SCALE and 1)
                 /*
